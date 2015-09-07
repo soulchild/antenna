@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'commander/import'
+require 'antenna'
+
+program :name, 'Antenna'
+program :version, Antenna::VERSION
+program :description, 'Painless iOS over-the-air enterprise distribution'
+
+program :help, 'Author', 'Tobi Kremer <tobias@funkreich.de>'
+program :help, 'Website', 'https://www.github.com/soulchild/antenna'
+program :help_formatter, :compact
+
+global_option('--verbose') { $verbose = true }
+
+default_command :help
+
+require 'antenna/commands'
