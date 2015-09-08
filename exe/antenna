@@ -11,7 +11,7 @@ program :help, 'Author', 'Tobi Kremer <tobias@funkreich.de>'
 program :help, 'Website', 'https://www.github.com/soulchild/antenna'
 program :help_formatter, :compact
 
-global_option('--verbose') { $verbose = true }
+# global_option('--verbose') { $verbose = true }
 
 default_command :help
 

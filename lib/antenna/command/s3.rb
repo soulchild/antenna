@@ -1,20 +1,21 @@
 require 'distributor/s3'
 
 command :s3 do |c|
-  c.name = "Antenna/S3"
+  c.name = "s3"
   c.syntax = "antenna s3 [options]"
   c.summary = "Distribute .ipa file over Amazon S3"
 
-  c.example '', '$ antenna s3 -f ./AwesomeApp.ipa -a access_key_id -s secret_access_key -b bucket_name'
+  c.example 'Distribute "Awesome.ipa" to S3 bucket "bucket_name"', 'antenna s3 --file ./Awesome.ipa -a access_key_id -s secret_access_key --create -b bucket_name'
 
   c.option '-f', '--file FILE', '.ipa file to distribute (searches current directory for .ipa files if not specified)'
   c.option '-a', '--access-key-id ACCESS_KEY_ID', 'S3 access key ID'
   c.option '-s', '--secret-access-key SECRET_ACCESS_KEY', 'S3 secret access key'
   c.option '-b', '--bucket BUCKET', 'S3 bucket name'
   c.option '--[no-]create', "(Don't) create bucket if it doesn't already exist"
-  c.option '-r', '--region REGION', "AWS region (optional, e.g. us-west-2)"
+  c.option '-r', '--region REGION', "AWS region (optional, defaults to us-east-1)"
   c.option '-e', '--endpoint ENDPOINT', "S3 endpoint (optional, e.g. https://mys3.example.com)"
   c.option '-x', '--expires EXPIRES', "Expiration of URLs in seconds (optional, e.g. 86400 = one day)"
+  c.option '', '--base-key BASE-KEY', "Base key to use for all files (optional, defaults to IPA filename without .ipa extension)"
   c.option '--acl ACL', "Permissions for uploaded files. Must be one of: public_read, private, public_read_write, authenticated_read (optional, defaults to private)"
 
   c.action do |args, options|
@@ -37,7 +38,7 @@ command :s3 do |c|
     end
 
     s3 = Antenna::Distributor::S3.new(@access_key_id, @secret_access_key, @region, @endpoint)
-    puts s3.distribute @file, { :bucket => @bucket, :create => !!options.create, :expire => options.expire, :acl => @acl } 
+    puts s3.distribute @file, { :bucket => @bucket, :create => !!options.create, :expire => options.expire, :acl => @acl, :base_key => @base_key } 
   end
 
   private

@@ -5,25 +5,30 @@ module Antenna
   class Distributor::S3
     include Distributor
     
-    def initialize(access_key_id, secret_access_key, region = "us-east-1", endpoint = nil)
+    def initialize(access_key_id, secret_access_key, region, endpoint = nil)
       options = {
         :access_key_id      => access_key_id,
         :secret_access_key  => secret_access_key,
-        :region             => region,
+        :region             => region || "us-east-1",
+        :endpoint           => endpoint
       }
-      options[:endpoint] = endpoint if endpoint
       @s3 = Aws::S3::Resource.new(options)
     end
 
-    def distribute_ipa(ipa, options = {})
-      options[:acl] ||= "private"
+    def setup(ipa_file, options = {})
+      @options = options
+      @options[:expire]   ||= 86400
+      @options[:acl]      ||= "private"
+      @options[:base_key] ||= File.basename(ipa_file, ".ipa")
+    end
 
-      if options[:create]
-        puts "Creating bucket #{options[:bucket]} with ACL #{options[:acl]}..."
+    def distribute_ipa(ipa)
+      if @options[:create]
+        puts "Creating bucket #{@options[:bucket]} with ACL #{@options[:acl]}..."
 
         @s3.create_bucket({
-          :bucket => options[:bucket],
-          :acl => options[:acl],        
+          :bucket => @options[:bucket],
+          :acl    => @options[:acl],        
         })
       end
 
@@ -31,45 +36,45 @@ module Antenna
 
       url = File.open(ipa.filename) do |file|
         object = @s3.bucket(@options[:bucket]).put_object({
-          :key          => File.basename(ipa.filename),
+          :key          => "#{@options[:base_key]}.ipa",
           :body         => file,
           :content_type => "application/octet-stream",
-          :acl          => options[:acl]
+          :acl          => @options[:acl]
         })
-        object.presigned_url(:get, { :expires_in => @expiration })
+        object.presigned_url(:get, { :expires_in => @options[:expire] })
       end
 
       URI.parse(url)
     end
 
-    def distribute_app_icon(app_icon, options = {})
+    def distribute_app_icon(app_icon)
       if app_icon
         puts "Distributing app icon..."
       end
     end
 
-    def distribute_manifest(manifest, options = {})
+    def distribute_manifest(manifest)
       puts "Distributing manifest..."
 
       object = @s3.bucket(@options[:bucket]).put_object({
-        :key          => "manifest.plist",
+        :key          => "#{@options[:base_key]}.plist",
         :body         => manifest.to_s,
         :content_type => "text/xml",
       })
 
-      URI.parse(object.presigned_url(:get, { :expires_in => @expiration }))
+      URI.parse(object.presigned_url(:get, { :expires_in => @options[:expire] }))
     end
 
-    def distribute_html(html, options = {})
+    def distribute_html(html)
       puts "Distributing HTML..."
 
       object = @s3.bucket(@options[:bucket]).put_object({
-        :key          => "html.html",
+        :key          => "#{@options[:base_key]}.html",
         :body         => html.to_s,
         :content_type => "text/html",
       })
 
-      URI.parse(object.presigned_url(:get, { :expires_in => @expiration }))
+      URI.parse(object.presigned_url(:get, { :expires_in => @options[:expire] }))
     end
   end
 end

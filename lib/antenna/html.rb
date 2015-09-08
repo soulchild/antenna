@@ -20,12 +20,38 @@ module Antenna
     <style type="text/css">
         body { font-family: Helvetica, Arial, sans-serif; text-align: center; color: #444; font-size: 18px; }
         img { display: block; margin: 1em auto; border: none; width: 120px; height: 120px; }
+        .btn, a.btn, a.btn:visited, a.btn:hover, a.btn:link { 
+            display: inline-block;
+            border-radius: 3px;
+            background-color: #0095c8;
+            color: white;
+            padding: .8em 1em;
+            margin: 1em 0;
+            text-decoration: none;
+        }
+        a.btn:hover {
+            background-color: #00bbfb;
+            color: white;
+        }
+        p {
+            color: #999
+        }
     </style>
 </head>
 <body>
     <h1><%= @info_plist.bundle_display_name %></h1>
     <h2><%= @info_plist.bundle_short_version %> (<%= @info_plist.bundle_version %>)</h2>
-    <a href="itms-services://?action=download-manifest&amp;url=<%= u(@manifest_url) %>"><img src="<%= @display_image_url %>">Installieren</a>
+    <% if @display_image_url %>
+    <a href="itms-services://?action=download-manifest&amp;url=<%= u(@manifest_url) %>">
+        <img src="<%= @display_image_url %>">
+    </a>
+    <% end %>
+    <a href="itms-services://?action=download-manifest&amp;url=<%= u(@manifest_url) %>" class="btn">Installieren</a>
+    <% if @info_plist.bundle_minimum_os_version %>
+    <p class="comment">
+        This app requires iOS <%= @info_plist.bundle_minimum_os_version %> or higher.
+    </p>
+    <% end %>
 </body>
 </html>
 EOF

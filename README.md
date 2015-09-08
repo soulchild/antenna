@@ -1,6 +1,6 @@
 # Antenna
 
-Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file. The result is a signed S3 URL, which you may then send to your clients, so they can install your app **with just one tap** from Mobile Safari.
+Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file. The result is a (signed S3) URL, which you may then send to your clients, so they can install your app **with just one tap** from Mobile Safari. Currently only S3 is supported, but it is easy and encouraged to create other storage backends.
 
 ## Installation
 
