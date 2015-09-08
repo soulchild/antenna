@@ -1,41 +1,55 @@
 # Antenna
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/antenna`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file. The result is a signed S3 URL, which you may then send to your clients, so they can install your app **with just one tap** from Mobile Safari.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
 ```ruby
-gem 'antenna'
+gem install antenna
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install antenna
 
 ## Usage
 
-TODO: Write usage instructions here
+Antenna adds the `antenna` command to your PATH:
 
-## Development
+```bash
+$ antenna
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+  Antenna
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+  Painless iOS over-the-air enterprise distribution
+
+  Commands:
+    help    Display global or [command] help documentation
+    s3      Distribute .ipa file over Amazon S3
+
+  Global Options:
+    --verbose
+    -h, --help           Display help documentation
+    -v, --version        Display version information
+    -t, --trace          Display backtrace when an error occurs
+```
+
+## Example
+
+```bash
+antenna s3 -a <YOUR-S3-ACCESS-KEY> -s <YOUR-S3-SECRET-KEY> --file <YOUR-IPA-FILE> --region us-east-1 --create --bucket ios-apps
+```
+
+You may also use a custom endpoint if you're hosting your own S3 cluster (something like [Ceph's Object Gateway S3](http://ceph.com/docs/master/radosgw/s3/)):
+
+```bash
+antenna s3 -a <YOUR-S3-ACCESS-KEY> -s <YOUR-S3-SECRET-KEY> --file <YOUR-IPA-FILE> --endpoint https://s3.mydomain.com --create --bucket ios-apps
+```
+
+## Author
+
+Tobi Kremer ([soulchild](https://www.github.com/soulchild))
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/antenna.
-
+Bug reports and pull requests are welcome on [GitHub](https://github.com/soulchild/antenna).
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
