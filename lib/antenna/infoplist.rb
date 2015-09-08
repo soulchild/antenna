@@ -2,7 +2,7 @@ require "CFPropertyList"
 
 module Antenna
   class InfoPlist
-    attr_accessor :bundle_display_name, :bundle_short_version, :bundle_identifier, :bundle_version, :bundle_icon_files, :bundle_minimum_os_version
+    attr_accessor :bundle_display_name, :bundle_short_version, :bundle_identifier, :bundle_version, :bundle_icon_filenames, :bundle_minimum_os_version
 
     def initialize(data)
       infoplist = CFPropertyList::List.new(
@@ -21,7 +21,7 @@ module Antenna
       if icons
         primary_icon = icons["CFBundlePrimaryIcon"]
         if primary_icon
-          @bundle_icon_files = primary_icon["CFBundleIconFiles"]
+          @bundle_icon_filenames = primary_icon["CFBundleIconFiles"]
         end
       end
     end

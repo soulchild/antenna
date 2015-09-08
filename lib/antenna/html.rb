@@ -46,7 +46,7 @@ module Antenna
         <img src="<%= @display_image_url %>">
     </a>
     <% end %>
-    <a href="itms-services://?action=download-manifest&amp;url=<%= u(@manifest_url) %>" class="btn">Installieren</a>
+    <a href="itms-services://?action=download-manifest&amp;url=<%= u(@manifest_url) %>" class="btn">Tap to install</a>
     <% if @info_plist.bundle_minimum_os_version %>
     <p class="comment">
         This app requires iOS <%= @info_plist.bundle_minimum_os_version %> or higher.

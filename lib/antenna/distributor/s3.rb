@@ -10,8 +10,8 @@ module Antenna
         :access_key_id      => access_key_id,
         :secret_access_key  => secret_access_key,
         :region             => region || "us-east-1",
-        :endpoint           => endpoint
       }
+      options[:endpoint] = endpoint if endpoint
       @s3 = Aws::S3::Resource.new(options)
     end
 
@@ -32,7 +32,7 @@ module Antenna
         })
       end
 
-      puts "Distributing ipa \"#{ipa.filename}\" to bucket \"#{@options[:bucket]}\"..."
+      puts "Distributing ipa \"#{ipa.filename}\"..."
 
       url = File.open(ipa.filename) do |file|
         object = @s3.bucket(@options[:bucket]).put_object({
@@ -50,6 +50,14 @@ module Antenna
     def distribute_app_icon(app_icon)
       if app_icon
         puts "Distributing app icon..."
+
+        object = @s3.bucket(@options[:bucket]).put_object({
+          :key          => "#{@options[:base_key]}.png",
+          :body         => app_icon,
+          :content_type => "image/png",
+        })
+
+        URI.parse(object.presigned_url(:get, { :expires_in => @options[:expire] }))
       end
     end
 

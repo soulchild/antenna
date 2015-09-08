@@ -51,6 +51,7 @@ module Antenna
     end
 
     def process_app_icon(ipa)
+      ipa.bundle_icon_files["60x60@2x"]
     end
 
     def process_manifest(ipa, ipa_url, app_icon_url)
