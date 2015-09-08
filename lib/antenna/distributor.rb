@@ -3,19 +3,19 @@ require 'antenna/manifest'
 require 'antenna/html'
 
 module Antenna
-  module Transport
+  module Distributor
     def distribute(ipa_file, options = {})
       ipa = process_ipa(ipa_file)
-      ipa_url = distribute_ipa(ipa)
+      ipa_url = distribute_ipa(ipa, options)
 
       app_icon = process_app_icon(ipa)
-      app_icon_url = distribute_app_icon(app_icon) if app_icon
+      app_icon_url = distribute_app_icon(app_icon, options) if app_icon
 
       manifest = process_manifest(ipa, ipa_url, app_icon_url)
-      manifest_url = distribute_manifest(manifest)
+      manifest_url = distribute_manifest(manifest, options)
 
       html = process_html(ipa, manifest_url, app_icon_url)
-      html_url = distribute_html(html)
+      html_url = distribute_html(html, options)
 
       return html_url
     end

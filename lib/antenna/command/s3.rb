@@ -1,4 +1,4 @@
-require 'transport/s3'
+require 'distributor/s3'
 
 command :s3 do |c|
   c.name = "Antenna/S3"
@@ -14,6 +14,7 @@ command :s3 do |c|
   c.option '--[no-]create', "(Don't) create bucket if it doesn't already exist"
   c.option '-r', '--region REGION', "AWS region (optional, e.g. us-west-2)"
   c.option '-e', '--endpoint ENDPOINT', "S3 endpoint (optional, e.g. https://mys3.example.com)"
+  c.option '-x', '--expires EXPIRES', "Expiration of URLs in seconds (optional, e.g. 86400 = one day)"
   c.option '--acl ACL', "Permissions for uploaded files. Must be one of: public_read, private, public_read_write, authenticated_read (optional, defaults to private)"
 
   c.action do |args, options|
@@ -32,11 +33,11 @@ command :s3 do |c|
     @endpoint = options.endpoint
     unless @endpoint
       determine_region! unless @region = options.region
-      say_error "Missing S3 region or endpoint" and abort unless @region
+      say_error "Missing either S3 region or endpoint" and abort unless @region
     end
 
-    s3 = Antenna::Transport::S3.new(@access_key_id, @secret_access_key, { :region => @region, :endpoint => @endpoint, :bucket => @bucket, :create => !!options.create, :acl => @acl })
-    puts s3.distribute(@file)
+    s3 = Antenna::Distributor::S3.new(@access_key_id, @secret_access_key, @region, @endpoint)
+    puts s3.distribute @file, { :bucket => @bucket, :create => !!options.create, :expire => options.expire, :acl => @acl } 
   end
 
   private

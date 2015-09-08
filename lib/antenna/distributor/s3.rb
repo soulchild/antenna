@@ -1,32 +1,29 @@
 require 'aws-sdk'
-require 'transport'
+require 'distributor'
 
 module Antenna
-  class Transport::S3
-    include Transport
+  class Distributor::S3
+    include Distributor
     
-    def initialize(access_key_id, secret_access_key, options = {})
-      @options = options
-      @options[:expire] ||= 86400
-      @expiration = 3600
-
-      init_options = {
+    def initialize(access_key_id, secret_access_key, region = "us-east-1", endpoint = nil)
+      options = {
         :access_key_id      => access_key_id,
         :secret_access_key  => secret_access_key,
-        :region             => @options[:region] || "us-west-2",
+        :region             => region,
       }
-      init_options[:endpoint] = @options[:endpoint] if @options[:endpoint]
-
-      @s3 = Aws::S3::Resource.new(init_options)
+      options[:endpoint] = endpoint if endpoint
+      @s3 = Aws::S3::Resource.new(options)
     end
 
-    def distribute_ipa(ipa)
-      if @options[:create]
-        puts "Creating bucket #{@options[:bucket]} with ACL #{@options[:acl]}..."
+    def distribute_ipa(ipa, options = {})
+      options[:acl] ||= "private"
+
+      if options[:create]
+        puts "Creating bucket #{options[:bucket]} with ACL #{options[:acl]}..."
 
         @s3.create_bucket({
-          :bucket => @options[:bucket],
-          :acl => @options[:acl] || "private",        
+          :bucket => options[:bucket],
+          :acl => options[:acl],        
         })
       end
 
@@ -36,7 +33,8 @@ module Antenna
         object = @s3.bucket(@options[:bucket]).put_object({
           :key          => File.basename(ipa.filename),
           :body         => file,
-          :content_type => "application/octet-stream"
+          :content_type => "application/octet-stream",
+          :acl          => options[:acl]
         })
         object.presigned_url(:get, { :expires_in => @expiration })
       end
@@ -44,13 +42,13 @@ module Antenna
       URI.parse(url)
     end
 
-    def distribute_app_icon(app_icon)
+    def distribute_app_icon(app_icon, options = {})
       if app_icon
         puts "Distributing app icon..."
       end
     end
 
-    def distribute_manifest(manifest)
+    def distribute_manifest(manifest, options = {})
       puts "Distributing manifest..."
 
       object = @s3.bucket(@options[:bucket]).put_object({
@@ -62,7 +60,7 @@ module Antenna
       URI.parse(object.presigned_url(:get, { :expires_in => @expiration }))
     end
 
-    def distribute_html(html)
+    def distribute_html(html, options = {})
       puts "Distributing HTML..."
 
       object = @s3.bucket(@options[:bucket]).put_object({
