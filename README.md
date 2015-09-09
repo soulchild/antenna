@@ -42,6 +42,10 @@ You may also use a custom endpoint if you're hosting your own S3 cluster (someth
 antenna s3 -a <YOUR-S3-ACCESS-KEY> -s <YOUR-S3-SECRET-KEY> --file <YOUR-IPA-FILE> --endpoint https://s3.mydomain.com --create --bucket ios-apps
 ```
 
+The resulting URL leads to the following installation site:
+
+![Installation site](https://raw.githubusercontent.com/soulchild/antenna/master/assets/example-installation.png)
+
 ## Author
 
 Tobi Kremer ([soulchild](https://www.github.com/soulchild))

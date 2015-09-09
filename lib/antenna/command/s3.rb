@@ -1,3 +1,4 @@
+require 'distributor'
 require 'distributor/s3'
 
 command :s3 do |c|
@@ -38,7 +39,8 @@ command :s3 do |c|
     end
 
     s3 = Antenna::Distributor::S3.new(@access_key_id, @secret_access_key, @region, @endpoint)
-    puts s3.distribute @file, { :bucket => @bucket, :create => !!options.create, :expire => options.expire, :acl => @acl, :base_key => @base_key } 
+    distributor = Antenna::Distributor.new(s3)
+    puts distributor.distribute @file, { :bucket => @bucket, :create => !!options.create, :expire => options.expire, :acl => @acl, :base_key => @base_key } 
   end
 
   private

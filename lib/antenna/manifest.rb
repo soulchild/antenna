@@ -29,6 +29,8 @@ module Antenna
                     <dict>
                         <key>kind</key>
                         <string>display-image</string>
+                        <key>needs-shine</key>
+                        <false/>
                         <key>url</key>
                         <string><%= h(@display_image_url) %></string>
                     </dict>

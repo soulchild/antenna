@@ -1,6 +1,5 @@
 require "zip"
 require "zip/filesystem"
-
 require "antenna/infoplist"
 
 module Antenna
@@ -44,6 +43,10 @@ module Antenna
           end
         end
       end
+    end
+
+    def input_stream
+      File.open(@filename, "r")
     end
   end
 end

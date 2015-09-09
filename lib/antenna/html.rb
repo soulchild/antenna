@@ -19,14 +19,13 @@ module Antenna
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <style type="text/css">
         body { font-family: Helvetica, Arial, sans-serif; text-align: center; color: #444; font-size: 18px; }
-        img { display: block; margin: 1em auto; border: none; width: 120px; height: 120px; }
+        img { display: block; margin: 1em auto; border: none; width: 120px; height: 120px; border-radius: 20px; }
         .btn, a.btn, a.btn:visited, a.btn:hover, a.btn:link { 
             display: inline-block;
             border-radius: 3px;
             background-color: #0095c8;
             color: white;
             padding: .8em 1em;
-            margin: 1em 0;
             text-decoration: none;
         }
         a.btn:hover {
