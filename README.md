@@ -47,6 +47,8 @@ The resulting URL leads to an installation page like the following and can be di
 
 ![Installation site](https://raw.githubusercontent.com/soulchild/antenna/master/assets/example-installation.png)
 
+*Note:* App icons in any .ipa file are converted from PNG to [Apple's CgBI file format](http://iphonedevwiki.net/index.php/CgBI_file_format) and therefore not viewable in most applications, including Chrome and Firefox. Apple applications like (Mobile) Safari or Preview.app know how to handle the format though.
+
 ## Author
 
 Tobi Kremer ([soulchild](https://www.github.com/soulchild))
