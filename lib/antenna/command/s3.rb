@@ -6,7 +6,7 @@ command :s3 do |c|
   c.syntax = "antenna s3 [options]"
   c.summary = "Distribute .ipa file over Amazon S3"
 
-  c.example 'Distribute "Awesome.ipa" to S3 bucket "bucket_name"', 'antenna s3 --file ./Awesome.ipa -a access_key_id -s secret_access_key --create -b bucket_name'
+  c.example 'Distribute "awesome.ipa" to S3 bucket "bucket_name"', 'antenna s3 --file ./awesome.ipa -a access_key_id -s secret_access_key --create -b bucket_name'
 
   c.option '-f', '--file FILE', '.ipa file to distribute (searches current directory for .ipa files if not specified)'
   c.option '-a', '--access-key-id ACCESS_KEY_ID', 'S3 access key ID'

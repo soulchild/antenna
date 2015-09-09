@@ -1,11 +1,11 @@
 # Antenna
 
-Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file. The result is a (signed S3) URL, which you may then send to your clients, so they can easily install your app from Mobile Safari. Currently only S3 is supported, but it is easy and encouraged to create other storage backends.
+Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file, and uploads everything via a distribution method of your choice (currently only S3 is supported, but you're encouraged to create other storage backends). The result is a (signed S3) URL, which you may then send to your clients, so they can easily install your app from Mobile Safari with just one tap.
 
 ## Installation
 
 ```bash
-gem install antenna
+gem install antenna-ota
 ```
 
 ## Usage
@@ -52,6 +52,8 @@ The resulting URL leads to an installation page like the following and can be di
 ## Author
 
 Tobi Kremer ([soulchild](https://www.github.com/soulchild))
+
+Inspired by Mattt Thompson's [iOS toolchain](https://github.com/nomad).
 
 ## Contributing
 

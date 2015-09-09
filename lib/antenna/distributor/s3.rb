@@ -15,14 +15,14 @@ module Antenna
     def setup(ipa_file, options = {})
       @options = options
       @options[:expire] = @options[:expire].to_i || 86400
-      @options[:acl]      ||= "private"
+      @options[:acl] ||= "private"
 
       if @options[:create]
         puts "Creating bucket #{@options[:bucket]} with ACL #{@options[:acl]}..."
 
         @s3.create_bucket({
           :bucket => @options[:bucket],
-          :acl    => @options[:acl],        
+          :acl    => @options[:acl],
         })
       end
     end
@@ -34,7 +34,7 @@ module Antenna
         :key          => filename,
         :content_type => content_type,
         :body         => data,
-      })      
+      })
 
       URI.parse(object.presigned_url(:get, { :expires_in => @options[:expire] }))
     end
