@@ -1,10 +1,10 @@
 # Antenna
 
-Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file. The result is a (signed S3) URL, which you may then send to your clients, so they can install your app **with just one tap** from Mobile Safari. Currently only S3 is supported, but it is easy and encouraged to create other storage backends.
+Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file. The result is a (signed S3) URL, which you may then send to your clients, so they can easily install your app from Mobile Safari. Currently only S3 is supported, but it is easy and encouraged to create other storage backends.
 
 ## Installation
 
-```ruby
+```bash
 gem install antenna
 ```
 
@@ -32,17 +32,18 @@ $ antenna
 
 ## Example
 
-```bash
-antenna s3 -a <YOUR-S3-ACCESS-KEY> -s <YOUR-S3-SECRET-KEY> --file <YOUR-IPA-FILE> --region us-east-1 --create --bucket ios-apps
-```
-
-You may also use a custom endpoint if you're hosting your own S3 cluster (something like [Ceph's Object Gateway S3](http://ceph.com/docs/master/radosgw/s3/)):
+Create a new S3 bucket called `antenna-ota` on Amazon's `eu-central-1` S3 cluster and upload OverTheAir.ipa:
 
 ```bash
-antenna s3 -a <YOUR-S3-ACCESS-KEY> -s <YOUR-S3-SECRET-KEY> --file <YOUR-IPA-FILE> --endpoint https://s3.mydomain.com --create --bucket ios-apps
+$ antenna s3 -a <YOUR-S3-ACCESS-KEY> -s <YOUR-S3-SECRET-KEY> --file OverTheAir.ipa --region eu-central-1 --create --bucket antenna-ota
+Distributing OverTheAir.ipa ...
+Distributing OverTheAir.png ...
+Distributing OverTheAir.plist ...
+Distributing OverTheAir.html ...
+https://antenna-ota.s3.eu-central-1.amazonaws.com/OverTheAir.html?<...signing-parameters...>
 ```
 
-The resulting URL leads to the following installation site:
+The resulting URL leads to an installation page like the following and can be distributed to your users for installation. The meta-data and app-icon is automatically extracted from the given .ipa file.
 
 ![Installation site](https://raw.githubusercontent.com/soulchild/antenna/master/assets/example-installation.png)
 
