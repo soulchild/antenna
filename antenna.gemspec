@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'antenna/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "antenna"
+  spec.name          = "antenna-ota"
   spec.version       = Antenna::VERSION
   spec.authors       = ["Tobi Kremer"]
   spec.email         = ["tobias.kremer@gmail.com"]

@@ -9,7 +9,7 @@ module Antenna
     end
 
     def distribute(ipa_file, options = {})
-      base_filename = File.basename(ipa_file, ".ipa")
+      base_filename = options[:base] || File.basename(ipa_file, ".ipa")
 
       # Let distributor set things up (if necessary)
       @distributor.setup(ipa_file, options) if @distributor.respond_to?(:setup)
@@ -17,38 +17,34 @@ module Antenna
       # Distribute IPA
       ipa = process_ipa(ipa_file)
       ipa_url = @distributor.distribute(
-        ipa.input_stream.read, 
-        "#{base_filename}.ipa", 
-        "application/octet-stream", 
-        options
+        ipa.input_stream.read,
+        "#{base_filename}.ipa",
+        "application/octet-stream",
       )
 
       # Distribute App Icon
       if app_icon = process_app_icon(ipa)
         app_icon_url = @distributor.distribute(
-          app_icon, 
-          "#{base_filename}.png", 
-          "image/png", 
-          options
+          app_icon,
+          "#{base_filename}.png",
+          "image/png",
         ) 
       end
 
       # Distribute Manifest
       manifest = build_manifest(ipa, ipa_url, app_icon_url)
       manifest_url = @distributor.distribute(
-        manifest.to_s, 
-        "#{base_filename}.plist", 
-        "text/xml", 
-        options
+        manifest.to_s,
+        "#{base_filename}.plist",
+        "text/xml",
       )
       
       # Distribute HTML
       html = build_html(ipa, manifest_url, app_icon_url)
       html_url = @distributor.distribute(
-        html.to_s, 
-        "#{base_filename}.html", 
-        "text/html", 
-        options
+        html.to_s,
+        "#{base_filename}.html",
+        "text/html",
       )
 
       # Let distributor clean things up (if necessary)

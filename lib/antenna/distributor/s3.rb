@@ -13,10 +13,9 @@ module Antenna
     end
 
     def setup(ipa_file, options = {})
-      @options            = options
-      @options[:expire]   ||= 86400
+      @options = options
+      @options[:expire] = @options[:expire].to_i || 86400
       @options[:acl]      ||= "private"
-      @options[:base_key] ||= File.basename(ipa_file, ".ipa")
 
       if @options[:create]
         puts "Creating bucket #{@options[:bucket]} with ACL #{@options[:acl]}..."
@@ -28,7 +27,7 @@ module Antenna
       end
     end
 
-    def distribute(data, filename, content_type, options)
+    def distribute(data, filename, content_type)
       puts "Distributing #{filename} ..."
       
       object = @s3.bucket(@options[:bucket]).put_object({

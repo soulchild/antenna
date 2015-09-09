@@ -16,7 +16,7 @@ command :s3 do |c|
   c.option '-r', '--region REGION', "AWS region (optional, defaults to us-east-1)"
   c.option '-e', '--endpoint ENDPOINT', "S3 endpoint (optional, e.g. https://mys3.example.com)"
   c.option '-x', '--expires EXPIRES', "Expiration of URLs in seconds (optional, e.g. 86400 = one day)"
-  c.option '', '--base-key BASE-KEY', "Base key to use for all files (optional, defaults to IPA filename without .ipa extension)"
+  c.option '-i', '--base BASE', "Base filename (optional, defaults to IPA filename without .ipa extension)"
   c.option '--acl ACL', "Permissions for uploaded files. Must be one of: public_read, private, public_read_write, authenticated_read (optional, defaults to private)"
 
   c.action do |args, options|
@@ -40,7 +40,7 @@ command :s3 do |c|
 
     s3 = Antenna::Distributor::S3.new(@access_key_id, @secret_access_key, @region, @endpoint)
     distributor = Antenna::Distributor.new(s3)
-    puts distributor.distribute @file, { :bucket => @bucket, :create => !!options.create, :expire => options.expire, :acl => @acl, :base_key => @base_key } 
+    puts distributor.distribute @file, { :bucket => @bucket, :create => !!options.create, :expire => options.expires, :acl => @acl, :base => options.base } 
   end
 
   private
