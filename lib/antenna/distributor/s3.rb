@@ -14,7 +14,8 @@ module Antenna
 
     def setup(ipa_file, options = {})
       @options = options
-      @options[:expire] = @options[:expire].to_i || 86400
+      @options[:expire] = @options[:expire] ? @options[:expire].to_i : 86400
+      puts @options[:expire]
       @options[:acl] ||= "private"
 
       if @options[:create]
