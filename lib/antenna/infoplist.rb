@@ -7,7 +7,6 @@ module Antenna
     def initialize(data)
       infoplist = CFPropertyList::List.new(
         :data   => data, 
-        :format => CFPropertyList::List::FORMAT_BINARY
       )
       infoplist_data = CFPropertyList.native_types(infoplist.value)
 
