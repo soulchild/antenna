@@ -1,4 +1,4 @@
-require "CFPropertyList"
+require "cfpropertylist"
 
 module Antenna
   class InfoPlist
