@@ -34,6 +34,7 @@ module Antenna
       @bundle_short_version       = infoplist_data["CFBundleShortVersionString"]
       @bundle_version             = infoplist_data["CFBundleVersion"]
       @bundle_minimum_os_version  = infoplist_data["MinimumOSVersion"]
+      @bundle_icons               = {}
 
       if icons = infoplist_data["CFBundleIconFiles"]
         @bundle_icons = self.class.determine_icons(icons)

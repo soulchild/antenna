@@ -28,11 +28,13 @@ module Antenna
     # Returns icon image data for given pixel size and resolution (defaults to 1).
     def bundle_icon(size, resolution=1)
       icon_data = nil
-      if filename = @info_plist.bundle_icons[size][resolution]
-        icon_glob = "Payload/#{@app_name}/#{filename}*.png"
-        Zip::File.open(@filename) do |zipfile|
-          zipfile.glob(icon_glob).each do |icon|
-            icon_data = icon.get_input_stream.read
+      if resolutions = @info_plist.bundle_icons[size]
+        if filename = resolutions[resolution]
+          icon_glob = "Payload/#{@app_name}/#{filename}*.png"
+          Zip::File.open(@filename) do |zipfile|
+            zipfile.glob(icon_glob).each do |icon|
+              icon_data = icon.get_input_stream.read
+            end
           end
         end
       end
