@@ -11,38 +11,32 @@ module Antenna
       @bundle_icon_files = {}
 
       Zip::File.open(filename) do |zipfile|
-        zipfile.dir.entries("Payload").each do |entry|
-          # Find app name
-          if entry =~ /.app$/
-            app_entry = zipfile.find_entry("Payload/#{entry}")
-            if app_entry
-              @app_name = entry
+        # Determine app name
+        @app_name = zipfile.dir.entries('Payload').
+          select { |file| file =~ /.app$/ }.
+          first
+        raise "Unable to determine app name from #{filename}" unless @app_name
 
-              # Find and parse Info.plist
-              infoplist_entry = zipfile.find_entry("Payload/#{@app_name}/Info.plist")
-              if infoplist_entry
-                infoplist_data = infoplist_entry.get_input_stream.read
-                @info_plist = Antenna::InfoPlist.new(infoplist_data)
-                break
-              end
-            end
-          end
-        end
+        # Find and read Info.plist
+        infoplist_entry = zipfile.get_entry("Payload/#{@app_name}/Info.plist")
+        infoplist_data = infoplist_entry.get_input_stream.read
+        @info_plist = Antenna::InfoPlist.new(infoplist_data)
+        raise "Unable to find Info.plist in #{filename}" unless @info_plist
+      end
+    end
 
-        say "Info.plist not found in #{filename}" and abort unless @info_plist
-
-        # Extract main icon files
-        @info_plist.bundle_icon_filenames.each do |icon|
-          icon_glob = "Payload/#{@app_name}/#{icon}*.png"
-          zipfile.glob(icon_glob).each do |entry|
-            (width, height, resolution) = entry.to_s.scan(/(\d+)x(\d+)@(\d+)x\.png$/).flatten
-            if width and height and resolution
-              key = "#{width}x#{height}@#{resolution}x"
-              @bundle_icon_files[key] = entry.get_input_stream.read
-            end
+    # Returns icon image data for given pixel size and resolution (defaults to 1).
+    def bundle_icon(size, resolution=1)
+      icon_data = nil
+      if filename = @info_plist.bundle_icons[size][resolution]
+        icon_glob = "Payload/#{@app_name}/#{filename}*.png"
+        Zip::File.open(@filename) do |zipfile|
+          zipfile.glob(icon_glob).each do |icon|
+            icon_data = icon.get_input_stream.read
           end
         end
       end
+      icon_data
     end
 
     def input_stream

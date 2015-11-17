@@ -17,7 +17,8 @@ command :s3 do |c|
   c.option '-e', '--endpoint ENDPOINT', "S3 endpoint (optional, e.g. https://mys3.example.com)"
   c.option '-x', '--expires EXPIRES', "Expiration of URLs in seconds (optional, e.g. 86400 = one day)"
   c.option '-i', '--base BASE', "Base filename (optional, defaults to IPA filename without .ipa extension)"
-  c.option '--acl ACL', "Permissions for uploaded files. Must be one of: public_read, private, public_read_write, authenticated_read (optional, defaults to private)"
+  c.option '-p', '--public', "Use public instead of signed URLs (you'll probably want '--acl public-read' as well)"
+  c.option '--acl ACL', "Permissions for uploaded files. Must be one of: private, public-read, public-read-write, authenticated-read, bucket-owner-read, bucket-owner-full-control (optional, defaults to private)"
 
   c.action do |args, options|
     determine_file! unless @file = options.file
@@ -40,7 +41,14 @@ command :s3 do |c|
 
     s3 = Antenna::Distributor::S3.new(@access_key_id, @secret_access_key, @region, @endpoint)
     distributor = Antenna::Distributor.new(s3)
-    puts distributor.distribute @file, { :bucket => @bucket, :create => !!options.create, :expire => options.expires, :acl => @acl, :base => options.base } 
+    puts distributor.distribute @file, { 
+      :bucket => @bucket, 
+      :create => !!options.create, 
+      :public => !!options.public,
+      :expire => options.expires, 
+      :acl    => options.acl, 
+      :base   => options.base 
+    } 
   end
 
   private

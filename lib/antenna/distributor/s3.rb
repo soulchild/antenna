@@ -7,6 +7,7 @@ module Antenna
         :access_key_id      => access_key_id,
         :secret_access_key  => secret_access_key,
         :region             => region || "us-east-1",
+        :force_path_style   => true
       }
       options[:endpoint] = endpoint if endpoint
       @s3 = Aws::S3::Resource.new(options)
@@ -34,9 +35,14 @@ module Antenna
         :key          => filename,
         :content_type => content_type,
         :body         => data,
+        :acl          => @options[:acl]
       })
 
-      URI.parse(object.presigned_url(:get, { :expires_in => @options[:expire] }))
+      if @options[:public]
+        URI.parse(object.public_url)
+      else
+        URI.parse(object.presigned_url(:get, { :expires_in => @options[:expire] }))
+      end
     end
   end
 end
