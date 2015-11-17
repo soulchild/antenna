@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/soulchild/antenna.svg?branch=master)](https://travis-ci.org/soulchild/antenna)
+
 # Antenna
 
 Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file, and uploads everything via a distribution method of your choice (currently only S3 is supported, but you're encouraged to create other storage backends). The result is a (signed S3) URL, which you may then send to your clients, so they can easily install your app from Mobile Safari with just one tap.
