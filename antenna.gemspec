@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   
   spec.add_dependency "aws-sdk", '~> 2.0', '>= 2.0.0'
   spec.add_dependency "commander", "~> 4.3"
-  spec.add_dependency "highline", '~> 1.7', '>= 1.7.2'
+  spec.add_dependency "highline", '~> 1.7', '>= 1.7.0'
   spec.add_dependency "CFPropertyList", '~> 2.3', '>= 2.3.0'
   spec.add_dependency "rubyzip", '~> 1.0', '>= 1.0.0'
 end
