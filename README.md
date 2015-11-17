@@ -30,9 +30,11 @@ $ antenna
     -t, --trace          Display backtrace when an error occurs
 ```
 
-## Example
+## Examples
 
-Create a new S3 bucket called `antenna-ota` on Amazon's `eu-central-1` S3 cluster and upload OverTheAir.ipa:
+### 1. Private, signed URL
+
+Create a new S3 bucket called `antenna-ota` on Amazon's `eu-central-1` S3 cluster and upload OverTheAir.ipa, resulting in a signed URL for distribution:
 
 ```bash
 $ antenna s3 -a <YOUR-S3-ACCESS-KEY> -s <YOUR-S3-SECRET-KEY> --file OverTheAir.ipa --region eu-central-1 --create --bucket antenna-ota
@@ -43,7 +45,20 @@ Distributing OverTheAir.html ...
 https://antenna-ota.s3.eu-central-1.amazonaws.com/OverTheAir.html?<...signing-parameters...>
 ```
 
-The resulting URL leads to an installation page like the following and can be distributed to your users for installation. The meta-data and app-icon is automatically extracted from the given .ipa file.
+### 2. Public, unsigned URL
+
+Upload OverTheAir.ipa to Amazon's `eu-central-1` S3 cluster, resulting in a publically available, unsigned URL for distribution:
+
+```bash
+$ antenna s3 -a <YOUR-S3-ACCESS-KEY> -s <YOUR-S3-SECRET-KEY> --file OverTheAir.ipa --public --acl public-read --region eu-central-1 --bucket antenna-ota
+Distributing OverTheAir.ipa ...
+Distributing OverTheAir.png ...
+Distributing OverTheAir.plist ...
+Distributing OverTheAir.html ...
+https://antenna-ota.s3.eu-central-1.amazonaws.com/OverTheAir.html
+```
+
+The resulting URLs show an installation page like the following and can be distributed to your users for installation. The meta-data and app-icon is automatically extracted from the given .ipa file:
 
 ![Installation site](https://raw.githubusercontent.com/soulchild/antenna/master/assets/example-installation.png)
 
