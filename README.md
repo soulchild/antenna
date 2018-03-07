@@ -30,6 +30,20 @@ $ antenna
     -h, --help           Display help documentation
     -v, --version        Display version information
     -t, --trace          Display backtrace when an error occurs
+    
+  Distribution Options:
+    -f, --file FILE                             .ipa file to distribute
+    -a, --access-key-id ACCESS_KEY_ID           S3 access key ID
+    -s, --secret-access-key SECRET_ACCESS_KEY   S3 secret access key
+    -b, --bucket BUCKET                         S3 bucket name
+        --[no-]create                           (Don't) create bucket if it doesn't already exist
+    -r  --region REGION                         AWS region (optional, e.g. https://mys3.example.com)
+    -e  --endpoint ENDPOINT                     S3 endpoint (optional, e.g. https://mys3.example.com)
+    -x  --expires EXPIRES                       Expiration of URLs in seconds (optional, e.g. 86400 = one day, one week max)
+    -i  --base BASE                             Base filename (optional, defaults to IPA filename without .ipa extension)
+    -p  --public                                Use public instead of signed URLs (you'll might want '--acl public-read' also)
+        --acl ACL                               Permissions for uploaded files. Must be one of: private, public-read, public-read-write, authenticated-read, bucket-owner-read, bucket-owner-full-control (optional, defaults to private)
+
 ```
 
 ## Examples
