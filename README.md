@@ -30,8 +30,9 @@ $ antenna
     -h, --help           Display help documentation
     -v, --version        Display version information
     -t, --trace          Display backtrace when an error occurs
-    
-  Distribution Options:
+```
+  S3-specific Options:
+```bash
     -f, --file FILE                             .ipa file to distribute
     -a, --access-key-id ACCESS_KEY_ID           S3 access key ID
     -s, --secret-access-key SECRET_ACCESS_KEY   S3 secret access key
@@ -45,6 +46,8 @@ $ antenna
         --acl ACL                               Permissions for uploaded files. Must be one of: private, public-read, public-read-write, authenticated-read, bucket-owner-read, bucket-owner-full-control (optional, defaults to private)
 
 ```
+
+## Usage Options
 
 ## Examples
 
