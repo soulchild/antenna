@@ -2,7 +2,7 @@
 
 # Antenna
 
-Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file, and uploads everything via a distribution method of your choice (currently only S3 is supported, but you're encouraged to create other storage backends). The result is a (signed S3) URL, which you may then send to your clients, so they can easily install your app from Mobile Safari with just one tap.
+Antenna aims to take the pain out of creating and distributing all the necessary files for Enterprise iOS over-the-air distribution. It generates the mandatory XML manifest, app icons and an HTML file, automatically extracting all the needed information from the specified `.ipa` file, and uploads everything via a distribution method of your choice (currently only S3 and local filesystem are supported, but you're encouraged to create other storage backends). The result is a (signed S3) URL, which you may then send to your clients, so they can easily install your app from Mobile Safari with just one tap.
 
 ## Installation
 
@@ -23,6 +23,7 @@ $ antenna
 
   Commands:
     help    Display global or [command] help documentation
+    local   Distribute .ipa file to local file system
     s3      Distribute .ipa file over Amazon S3
 
   Global Options:
@@ -31,7 +32,7 @@ $ antenna
     -v, --version        Display version information
     -t, --trace          Display backtrace when an error occurs
 ```
-  
+
 ### S3-specific options
 
 ```
@@ -46,7 +47,14 @@ $ antenna
     -i  --base BASE                             Base filename (optional, defaults to IPA filename without .ipa extension)
     -p  --public                                Use public instead of signed URLs (you'll might want '--acl public-read' also)
         --acl ACL                               Permissions for uploaded files. Must be one of: private, public-read, public-read-write, authenticated-read, bucket-owner-read, bucket-owner-full-control (optional, defaults to private)
+```
 
+### Local-specific options
+
+```
+    -f, --file FILE      .ipa file to distribute (searches current directory for .ipa files if not specified)
+    -U, --url URL        Base URL all files should be prefixed with
+    -i, --base BASE      Base filename (optional, defaults to IPA filename without .ipa extension)
 ```
 
 ## Examples
@@ -81,7 +89,20 @@ The resulting URLs show an installation page like the following and can be distr
 
 ![Installation site](https://raw.githubusercontent.com/soulchild/antenna/master/assets/example-installation.png)
 
-*Note:* App icons in any .ipa file are converted from PNG to [Apple's CgBI file format](http://iphonedevwiki.net/index.php/CgBI_file_format) and therefore not viewable in most applications, including Chrome and Firefox. Apple applications like (Mobile) Safari or Preview.app know how to handle the format though.
+_Note:_ App icons in any .ipa file are converted from PNG to [Apple's CgBI file format](http://iphonedevwiki.net/index.php/CgBI_file_format) and therefore not viewable in most applications, including Chrome and Firefox. Apple applications like (Mobile) Safari or Preview.app know how to handle the format though.
+
+### 3. Local file system
+
+Distribute OverTheAir.ipa to the local file-system. The resulting files can then be uploaded manually:
+
+```bash
+$ antenna local --url https://www.example.com/ipa/ --file OverTheAir.ipa
+Distributing OverTheAir.ipa ...
+Distributing OverTheAir.png ...
+Distributing OverTheAir.plist ...
+Distributing OverTheAir.html ...
+https://www.example.com/ipa/OverTheAir.html
+```
 
 ## Author
 
