@@ -1,6 +1,7 @@
 $:.push File.expand_path('../', __FILE__)
 
 require 'command/s3'
+require 'command/local'
 
 private
 
